@@ -9,6 +9,8 @@ permissions:
   
 env:
   S3_BUCKET_NAME: sideproject-sns
+  working-directory: ./server
+  RESOURCE_PATH: ./server/src/main/resources/application.yml
 
 jobs:
   build:
@@ -23,18 +25,34 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         
+    # 환경변수 세팅    
+    - name: Set yaml file 
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ${{ env.RESOURCE_PATH }}
+      env:
+          spring.datasource.url: ${{ secrets.MYSQL_URL }}
+          spring.datasource.username: ${{ secrets.MYSQL_USERNAME }}
+          spring.datasource.password: ${{ secrets.MYSQL_PASSWORD }}
+          jwt.key: ${{ secrets.JWT_KEY}
+#           cloud.aws.credentials.access-key: ${{ secrets.AWS_ACCESS_KEY }}
+#           cloud.aws.credentials.secret-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           cloud.aws.s3.bucket: ${{ secrets.IMAGE_BUCKET }}
+#           notification.mattermost.webhook-url: ${{ secrets.MATTERMOST_URL }}    
+        
     - name: Change mode gradle
       run: chmod +x gradlew
+      working-directory: ${{ env.working-directory }}
     
     - name: Build with Gradle
-      uses: server/gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: build
+      run: ./gradlew clean build
+      working-directory: ${{ env.working-directory }}
     
     # build한 후 프로젝트를 압축합니다.
     - name: Make zip file
       run: zip -r ./practice-deploy.zip .
       shell: bash
+      working-directory: ${{ env.working-directory }}
     
     # Access Key와 Secret Access Key를 통해 권한을 확인합니다.
     # 아래 코드에 Access Key와 Secret Key를 직접 작성하지 않습니다.
@@ -47,4 +65,5 @@ jobs:
     
     # 압축한 프로젝트를 S3로 전송합니다.
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./practice-deploy.zip s3://$S3_BUCKET_NAME/practice-deploy.zip
+      run: aws s3 cp --region ap-northeast-2 ./practice-deploy.zip s3://sideproject-sns/practice-deploy.zip
+      working-directory: ${{ env.working-directory }}
