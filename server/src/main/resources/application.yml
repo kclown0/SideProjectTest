@@ -5,6 +5,7 @@ spring:
       ddl-auto: update
     show-sql: true
     properties.hibernate.format_sql : true
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${ MYSQL_URL }
@@ -24,4 +25,4 @@ jwt:
 
 mail:
   address:
-    admin: admin@gmail.com #test용...임시 이메일!
+    admin: admin@gmail.com #test용...임시 이메일
