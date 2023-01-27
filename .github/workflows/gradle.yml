@@ -34,7 +34,7 @@ jobs:
           spring.datasource.url: ${{ secrets.MYSQL_URL }}
           spring.datasource.username: ${{ secrets.MYSQL_USERNAME }}
           spring.datasource.password: ${{ secrets.MYSQL_PASSWORD }}
-          jwt.key: ${{ secrets.JWT_KEY}
+          jwt.key: ${{ secrets.JWT_KEY}}
 #           cloud.aws.credentials.access-key: ${{ secrets.AWS_ACCESS_KEY }}
 #           cloud.aws.credentials.secret-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #           cloud.aws.s3.bucket: ${{ secrets.IMAGE_BUCKET }}
@@ -65,5 +65,5 @@ jobs:
     
     # 압축한 프로젝트를 S3로 전송합니다.
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./practice-deploy.zip s3://sideproject-sns/practice-deploy.zip
+      run: aws s3 cp --region ap-northeast-2 ./practice-deploy.zip s3://sideproject-sns/deploy.zip
       working-directory: ${{ env.working-directory }}
