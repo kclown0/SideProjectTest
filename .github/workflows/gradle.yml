@@ -68,7 +68,7 @@ jobs:
       run: aws s3 cp --region ap-northeast-2 ./practice-deploy.zip s3://sideproject-sns/deploy.zip
       working-directory: ${{ env.working-directory }}
 
-      # CodeDeploy에게 배포명령
+      # CodeDeploy에게 배포 명령
     - name: Code Deploy
       run: >
         aws deploy create-deployment --application-name sideproject-sns
