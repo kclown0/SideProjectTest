@@ -74,4 +74,4 @@ jobs:
         aws deploy create-deployment --application-name sideproject-sns
         --deployment-config-name CodeDeployDefault.AllAtOnce
         --deployment-group-name sideproject-sns-grup
-        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=websns-deploy.zip
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=deploy.zip
